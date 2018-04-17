@@ -1,0 +1,21 @@
+{
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "latest",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "latest",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-babel": "latest",
+    "gulp-cleancss": "^0.2.2",
+    "gulp-concat": "latest",
+    "gulp-connect": "^5.5.0",
+    "gulp-minify": "^2.1.0",
+    "gulp-sass": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "gulp-sane-watch": "^2.0.4"
+  },
+  "dependencies": {
+    "sweetalert": "^2.1.0"
+  }
+}

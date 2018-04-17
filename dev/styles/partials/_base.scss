@@ -1,0 +1,61 @@
+// IMPORTS SETTINGS
+// @import 'libs/normalize.css';
+@import '../modules/colors';
+@import '../modules/animations';
+@import '../modules/mq';
+
+// FONTS
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text:400i,600,600i|Playfair+Display+SC:700');
+
+  // Font weights & styles
+  $regular: 400;
+  $semibold: 600;
+  $bold: 700;
+  $italic: italic;
+
+  // Base Fonts
+  $crimson: 'Crimson Text', serif;
+  $playfair: 'Playfair Display SC', serif;
+  $base-font-size: 0.9rem;
+  $base-line-height: 1.4;
+
+// COMMON ENVIRONMENT
+  *{
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: $black;
+    text-align: justify;
+    font-family: $crimson;
+    font-weight: $regular;
+    font-style: $italic;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: $gray;
+    font-family: $playfair;
+    font-weight: $bold;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  // IMPORTS COMPONENTS
+    @import 'app';
+    
