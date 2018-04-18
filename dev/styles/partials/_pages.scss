@@ -1,0 +1,59 @@
+$mainClass: book__pages;
+
+.#{$mainClass} { 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34%; //tablet 40%;
+    height: 74vh;
+
+    //left pages' common styles
+    &--left {
+      z-index: 2;
+      transform: translate(-100%, -50%);
+
+      .#{$mainClass}__page {
+        transform-origin: bottom right;
+        transform: scale(0.99, 0.94) translate(0, -3px) perspective(150px) rotateX(-1.11deg);
+      }
+    }
+
+    //right pages' common styles
+    &--right {
+      z-index: 2;
+      transform: translate(0%, -50%);
+
+      .#{$mainClass}__page  {
+        transform-origin: bottom left;
+        transform: scale(0.99, 0.94) translate(0, -3px) perspective(150px) rotateX(calc(360deg - 1.11deg));
+      }
+    }
+
+    //page's common style
+    &__page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $page;
+      border: thin solid transparent;
+      border-image: url('../images/common/pencil_texture.jpg') 3 10 3 10 round stretch;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: $pageDepth;
+      }
+    }
+
+    //TEXT page
+    @import './pText';
+
+    //MAP page
+    @import './pMap';
+  }

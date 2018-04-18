@@ -1,0 +1,75 @@
+$mainClass: book__cover;
+
+.#{$mainClass} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 35%; //tablet 40%;
+    height: 75vh;
+    background-color: $cover;
+
+    //book skew
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: $cover;
+    }
+
+    //book spine
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0%;
+      width: 10%;
+      height: 100%;
+      background-color: $cover;
+      transform: translateY(5px);
+    }
+
+    &--front {
+      z-index: 1;
+      transform: translate(-100%, -50%) rotateX(2deg) skewX(2deg);
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+
+      &::after {
+        transform: translateX(10px) skewX(-2deg);
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      //book spine
+      &::before {
+        right: 0%;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+    }
+
+    &--back{
+      z-index: 1;
+      transform: translate(0, -50%) rotateX(2deg) skew(-2deg);
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      //book skew
+      &::after {
+        transform: translateX(-10px) skewX(2deg);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
+      //book spine
+      &::before { 
+        left: 0%;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+  }

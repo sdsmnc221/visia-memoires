@@ -8,6 +8,9 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const minify = require('gulp-minify');
 const watch = require('gulp-sane-watch');
+const browserify = require('browserify');
+const babelify = require('babelify');
+const watchify = require('watchify');
 
 const htmlIn = ['dev/*.html', 'dev/**/*.html', 'dev/*.ico', 'dev/*.pdf'],
       htmlOut = 'dist',
@@ -116,5 +119,5 @@ gulp.task('watch', function() {
 })
 
 //PUT EVERYTHING TOGETHER
-gulp.task('default', ['libs', 'bundle', 'html', 'sass', 'babel', 'live', 'watch']);
+gulp.task('default', ['images', 'libs', 'bundle', 'html', 'sass', 'babel', 'live', 'watch']);
 // gulp.task('default', ['libs', 'images', 'html', 'sass', 'babel', 'live', 'watch']);

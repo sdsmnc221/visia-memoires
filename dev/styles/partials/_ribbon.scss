@@ -1,0 +1,52 @@
+$mainClass: book__ribbon;
+$ribbonW: 1.5%;
+
+.#{$mainClass} {
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: calc(50% + #{$ribbonW} * 2);
+    width: $ribbonW;
+    height: 80vh;
+    transform: translate(-50%, calc(-50% + 4px)) rotate(-4deg) skew(-4deg);
+    background-color: $wine;
+    box-shadow: 2px 3px 11px 0 $dWineShadow;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: calc(100% - 1px);
+      width: 5px;
+      height: 10px;
+      background-image: url('../images/common/ribbon_shdw.svg');
+      background-repeat: no-repeat;
+      background-position: top left;
+      background-size: contain;
+    }
+
+    &__t{
+      position: absolute;
+      display: block;
+      bottom: -15px;
+      width: 0;
+      height: 0;
+
+      //tail left
+      &:nth-child(1) {
+        border-top: 20px solid $wine;
+        border-right: 10px solid transparent;
+      }
+
+      //tail right
+      &:nth-child(2) {
+        right: 0;
+        border-top: 20px solid $wine;
+        border-left: 10px solid transparent;
+      }
+    }
+
+    
+
+  }

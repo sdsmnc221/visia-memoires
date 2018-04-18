@@ -16,8 +16,8 @@
   // Base Fonts
   $crimson: 'Crimson Text', serif;
   $playfair: 'Playfair Display SC', serif;
-  $base-font-size: 0.9rem;
-  $base-line-height: 1.4;
+  $base-font-size: 0.8rem;
+  $base-line-height: 1.2;
 
 // COMMON ENVIRONMENT
   *{
@@ -33,7 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    color: $black;
+    color: $dWine;
     text-align: justify;
     font-family: $crimson;
     font-weight: $regular;
@@ -43,17 +43,14 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: $gray;
+    color: $dWine;
     font-family: $playfair;
     font-weight: $bold;
+    font-style: normal;
   }
 
   h1 {
-    font-size: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1rem;
+    font-size: $base-font-size*1.05;
   }
 
   // IMPORTS COMPONENTS

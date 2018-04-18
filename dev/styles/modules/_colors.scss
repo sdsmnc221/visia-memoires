@@ -1,14 +1,16 @@
 //Shades
 $bg: #f3f0e7;
 $page: #f1f1e9;
+$cover: #782E1A;
 $wine: #750910;
 $dWine: #4d0910;
+$dWineShadow: rgba(77, 9, 16, 0.6); 
 $charlotte: #23471b;
 $philippe: #3d2775; 
 $tape: rgba(196, 145, 123, 0.5);
 
 //Gradients
-$pageDepth: linear-gradient(1.2deg, rgba(240, 240, 214, 0) 0%, rgba(240, 240, 214, 1) 59.09%); 
+$pageDepth: linear-gradient(90deg, rgba(240, 240, 214, 1) 0%, rgba(240, 240, 214, 0) 25%, rgba(240, 240, 214, 0) 75%, rgba(240, 240, 214, 1) 100%); 
 $ribbonDepth: linear-gradient(178.5deg, #2E181A 0%, #7C4728 37.58%, #2E181A 61.21%, #281A0F 100%);
 $mapOverlay: linear-gradient(-0.6deg, rgba(255, 255, 255, 0.35) 0%, rgba(193, 39, 45, 0.5) 100%); //overlay
 $bookmark: '';

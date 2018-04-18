@@ -1,0 +1,20 @@
+$mainClass: book__pages__map;
+
+.#{$mainClass} {
+    background-color: transparent;
+    border-image: none;
+
+    img {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 106%;
+        transform-origin: top left;
+        transform: translate(-2px, -17px) scaleX(1.2) scaleY(0.99);
+    }
+    
+    &::before {
+        display: none;
+    }
+}
