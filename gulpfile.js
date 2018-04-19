@@ -1,44 +1,52 @@
-const autoprefixer = require('gulp-autoprefixer');
-const babel = require('gulp-babel');
-const concat = require('gulp-concat');
-const connect = require('gulp-connect');
-const cleancss = require('gulp-cleancss');
-const sass = require('gulp-sass');
-const gulp = require('gulp');
-const gutil = require('gulp-util');
-const minify = require('gulp-minify');
-const watch = require('gulp-sane-watch');
-const browserify = require('browserify');
-const babelify = require('babelify');
-const watchify = require('watchify');
+const gulp = require('gulp'),
+      gutil = require('gulp-util'),autoprefixer = require('gulp-autoprefixer'),
+      browserify = require('browserify'),
+      source = require('vinyl-source-stream'),
+      buffer = require('vinyl-buffer');
+      babelify = require('babelify'),
+      babel = require('gulp-babel'),
+      cleancss = require('gulp-cleancss'),
+      sass = require('gulp-sass'),
+      minify = require('gulp-minify'),
+      concat = require('gulp-concat'),
+      connect = require('gulp-connect'),
+      watch = require('gulp-sane-watch'),
+      watchify = require('watchify');
 
-const htmlIn = ['dev/*.html', 'dev/**/*.html', 'dev/*.ico', 'dev/*.pdf'],
+const imgIn = ['dev/images/*.+(jpg|jpeg|gif|png|svg)', 'dev/images/**/*.+(jpg|jpeg|gif|png|svg)'],
+      imgOut = 'dist/images',
+      htmlIn = ['dev/*.html', 'dev/**/*.html', 'dev/*.ico', 'dev/*.pdf'],
       htmlOut = 'dist',
-      cssIn = ['dev/styles/*.scss', 'dev/styles/**/*.scss', 'dev/libs/*.css', 'dev/libs/**/*.css'],
+      cssIn = ['dev/styles/*.scss', 'dev/styles/**/*.scss'],
       cssOut = 'dist/styles',
-      cssDist = ['dist/styles/*.css', 'dist/styles/**/*.css'],
       cssWatch = ['dev/styles/*.scss', 'dev/styles/**/*.scss', 'dev/libs/*.scss', 'dev/libs/**/*.scss'],
-      jsIn = ['dev/scripts/*.js', 'dev/scripts/**/*.js'],
+      jsWatch = ['dev/scripts/*.js', 'dev/scripts/**/*.js', 'dev/libs/*.js', 'dev/libs/**/*.js'],
+      jsIn = 'dev/scripts/app.js',
       jsOut = 'dist/scripts',
-      libsStylesB = ['dev/libs/normalize.css'
-                ],
-      libsScriptsB = [
-                'dev/libs/jquery.min.js',
-                'dev/libs/sweetalert.min.js',
-                ],
-      libsIn = [
-                'dev/libs/normalize.css',
-                'dev/libs/jquery.min.js',
-                'dev/libs/sweetalert.min.js'
-      ]
+      libsStyles = ['dev/libs/normalize.css'],
+      libsScripts = ['dev/libs/fetch.js',
+                     'dev/libs/tooltip.min.js',
+                     'dev/libs/jquery.min.js',
+                     'dev/libs/sweetalert.min.js'],
+      libsWatch = 'dev/libs',
       libsOut = 'dist/libs',
-      imgIn = ['dev/images/*.+(jpg|jpeg|gif|png|svg)', 'dev/images/**/*.+(jpg|jpeg|gif|png|svg)'],
-      imgOut = 'dist/images';
+      dataIn = ['dev/data/*', 'dev/data/**/*']
+      dataOut = 'dist/data';
 
-//GULP UTIL - LOGGING MESSAGES
-// gulp.task('log', function() {
-//     gutil.log(gutil.colors.inverse('toto'));
-// });
+
+//DATA
+gulp.task('data', function() {
+    gulp.src(dataIn)
+        .pipe(gulp.dest(dataOut))
+        .pipe(connect.reload());
+});
+
+//IMAGES
+gulp.task('images', function() {
+    gulp.src(imgIn)
+        .pipe(gulp.dest(imgOut))
+        .pipe(connect.reload());
+});
 
 //HTML
 gulp.task('html', function() {
@@ -63,35 +71,48 @@ gulp.task('sass', function() {
 
 //LIBS
 gulp.task('libs', function() {
-    gulp.src(libsIn)
+    gulp.src(libsStyles)
         .pipe(gulp.dest(libsOut))
         .pipe(connect.reload());
 });
 
-//IMAGES
-gulp.task('images', function() {
-    gulp.src(imgIn)
-        .pipe(gulp.dest(imgOut))
-        .pipe(connect.reload());
-});
+gulp.task('css', ['libs', 'sass']);
 
-//BUNDLE JS SCRIPTS
-gulp.task('bundle', function() {
-    gulp.src(libsScriptsB)
-    .pipe(concat('bundle.index.js'))
-    .pipe(minify({ext: {min: '.min.js'}}))
-    .pipe(gulp.dest(libsOut));
-});
 
 //COMPILE ES6
-gulp.task('babel', function() {
-    gulp.src(jsIn)
-        .pipe(babel())
-            .on('error', gutil.log)
+// gulp.task('babel', function() {
+//     gulp.src(jsIn)
+//         .pipe(babel())
+//             .on('error', gutil.log)
+//         .pipe(minify({ext: {min: '.min.js'}}))
+//         .pipe(gulp.dest(jsOut))
+//         .pipe(connect.reload());
+// });
+
+//BUNDLE & TRANSPILE JS
+gulp.task('vendor', function() {
+    gulp.src(libsScripts)
+    .pipe(concat('vendor.js'))
+    .pipe(minify({ext: {min: '.min.js'}}))
+    .pipe(gulp.dest(libsOut))
+    .pipe(connect.reload());
+});
+
+gulp.task('browserify', function() {
+    return browserify({
+            entries: jsIn,
+            debug: true
+        })
+        .transform('babelify', {"presets": ["es2015"], "plugins": ["syntax-async-functions", "transform-regenerator", 'transform-runtime']})
+        .bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
         .pipe(minify({ext: {min: '.min.js'}}))
         .pipe(gulp.dest(jsOut))
         .pipe(connect.reload());
 });
+
+gulp.task('bundle', ['vendor', 'browserify']);
 
 
 //LIVE RELOAD
@@ -107,17 +128,26 @@ gulp.task('watch', function() {
     // gulp.watch(htmlIn, ['html']);
     // gulp.watch(cssWatch, ['sass']);
     // gulp.watch(jsIn, ['babel']);
+    watch(dataIn, function() {
+        gulp.start('data');  
+    });
+    watch(imgIn, function() {
+        gulp.start('images');  
+    });
     watch(htmlIn, function() {
         gulp.start('html');  
     });
     watch(cssWatch, function() {
         gulp.start('sass');  
     });
-    watch(jsIn, function() {
-        gulp.start('babel');  
+    watch(jsWatch, function() {
+        gulp.start('browserify');  
+    });
+    watch(libsWatch, function() {
+        gulp.start('libs', 'vendor');  
     });
 })
 
 //PUT EVERYTHING TOGETHER
-gulp.task('default', ['images', 'libs', 'bundle', 'html', 'sass', 'babel', 'live', 'watch']);
+gulp.task('default', ['data', 'images', 'html', 'css', 'bundle', 'live', 'watch']);
 // gulp.task('default', ['libs', 'images', 'html', 'sass', 'babel', 'live', 'watch']);
