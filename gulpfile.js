@@ -23,11 +23,11 @@ const imgIn = ['dev/images/*.+(jpg|jpeg|gif|png|svg)', 'dev/images/**/*.+(jpg|jp
       jsWatch = ['dev/scripts/*.js', 'dev/scripts/**/*.js', 'dev/libs/*.js', 'dev/libs/**/*.js'],
       jsIn = 'dev/scripts/app.js',
       jsOut = 'dist/scripts',
-      libsStyles = ['dev/libs/normalize.css'],
+      libsStyles = 'dev/libs/*.css',
       libsScripts = ['dev/libs/fetch.js',
-                     'dev/libs/tooltip.min.js',
-                     'dev/libs/jquery.min.js',
-                     'dev/libs/sweetalert.min.js'],
+                     'dev/libs/leaflet.js',
+                     'dev/libs/GpPluginLeaflet.js',
+                     'dev/libs/papaparse.min.js'],
       libsWatch = 'dev/libs',
       libsOut = 'dist/libs',
       dataIn = ['dev/data/*', 'dev/data/**/*']
@@ -72,6 +72,8 @@ gulp.task('sass', function() {
 //LIBS
 gulp.task('libs', function() {
     gulp.src(libsStyles)
+        .pipe(concat('vendor.css'))
+        .pipe(cleancss())
         .pipe(gulp.dest(libsOut))
         .pipe(connect.reload());
 });

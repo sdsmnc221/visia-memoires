@@ -32,8 +32,10 @@ Lancer Gulp.
 
     $ gulp
     
-    // s'il y a des erreurs de manque de dépendances X (très rarement mais si c'est le cas, c'est souvent babel-core, node-sass), il faudrait les installers
-    $ (sudo) npm i --save-dev --unsafe-pem babel-core node-sass etc 
+    // s'il y a des erreurs de manque de dépendances X
+    // (très rarement mais si c'est le cas, c'est souvent
+    // babel-core, node-sass), il faudrait les installer :
+    $ (sudo) npm i --save-dev --unsafe-perm babel-core node-sass etc 
 
 Accéder au serveur. 
 

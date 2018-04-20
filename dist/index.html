@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="fr">
   <head>
-    <title></title>
+    <title>MÉMOIRES DE MADAME DE MORNAY</title>
     <meta name="author" content="" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="libs/normalize.css">
+    <link rel="stylesheet" href="libs/vendor.css">
     <link rel="stylesheet" href="styles/index.css" />
   </head>
   <body>
@@ -23,39 +23,44 @@
         <div class="book__cover book__cover--backface book__cover--front"></div>
 
         <!-- PAGES -->
-        <div class="book__pages book__pages--left">
+        <section class="book__pages book__pages--left">
             <div class="book__pages__page"></div>
-            <section class="book__pages__page book__pages__text">
+            <div class="book__pages__page book__pages__text">
                 <img src="./images/common/page_text.svg" alt="">
                 <div class="book__pages__text__tbox">
                     <header id="bookTitle"><h1>MÉMOIRES DE MADAME DE MORNAY</h1></header>
-                    <p id="content"></p>
+                    <section id="content"></section>
                     <footer id="pageInfo">
                         <p id="pageIndex"></p>
                         <form id="pageSearch"></form>
                         <p id="pageSrc"></p>
                     </footer>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
         <div class="book__ribbon">
             <div class="book__ribbon__t"></div>
             <div class="book__ribbon__t"></div>
         </div>
 
-        <div class="book__pages book__pages--right">
+        <section class="book__pages book__pages--right">
             <div class="book__pages__page"></div>
-            <section class="book__pages__page book__pages__map">
+            <div class="book__pages__page book__pages__map">
                 <img src="./images/common/page_map.svg" alt="">
-            </section>
-        </div>
+                <canvas id="test"></canvas>
+                <div class="book__pages__map__mbox">
+                    <section id="map"></section>
+                    <div class="map__deco"></div>
+                </div>
+            </div>
+        </section>
 
         <!-- BACK COVER -->
         <div class="book__cover book__cover--backface book__cover--back"></div>
       </section>
 
-    </div>
+    </section>
     <script src="libs/vendor.min.js"></script>
     <script src="scripts/app.min.js"></script>
   </body>
