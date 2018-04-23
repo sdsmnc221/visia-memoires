@@ -1,6 +1,6 @@
 const DataHandler = {
-    textUrl: '../../data/text.txt',
-    locationsUrl: '../../data/locations.csv',
+    textUrl: 'data/text.txt',
+    locationsUrl: 'data/locations.csv',
     
     getText: async function() {
         let text = await fetch(this.textUrl);
@@ -52,20 +52,61 @@ const DataHandler = {
             _location = {},
             _locations = {
                 cleaned: [],
-                origin: []
+                origin: [],
+                0: [],
+                1: []
             };
 
         locations.slice(1).forEach((location, index) => {
             location.forEach((e, i) => {
                 _location[props[i]] = e;
             });
-            
+            _location.coords = [parseFloat(_location.lat.replace(',', '.')), parseFloat(_location.lng.replace(',', '.'))];
+            delete _location.lat;
+            delete _location.lng;
+
             _locations.origin.push(_location);
-            if (!_locations.cleaned.find(e => e.city === _location.city)) {
+            
+            //Cleaning & Merging process :
+            //To keep 1 unique occurence of each location
+            //if _locations.cleaned already contains an occurence
+            //of the location
+            const occurenceIndex = _locations.cleaned.findIndex(e => e.city === _location.city);
+            //First occurence: Rebuild _location and push it to _location.cleaned
+            if (occurenceIndex === -1) {
+                _location.pages = {
+                    '0': (_location.subject === '0') ? [_location.page] : [],
+                    '1': (_location.subject === '1') ? [_location.page] : []
+                }
+                delete _location.subject;
+                delete _location.page;
                 _locations.cleaned.push(_location);
+            //else from 2nd occurence: Add up subjects and pages to the already 
+            //existed location in _location.cleaned
+            } else {
+                const occurence = _locations.cleaned[occurenceIndex].pages[_location.subject];
+                _locations.cleaned[occurenceIndex].pages[_location.subject] = [...occurence, _location.page];
             }
+
+            //Empty _location
             _location = {};
         });
+
+        //Branching process
+        _locations.cleaned.forEach(e => {
+            console.log(e.pages[1]);
+            if (e.pages[0].length > 0) {
+                let _e = e;
+                _e.pages = _e.pages[0];
+                _locations[0].push(_e);
+            }
+            if (e.pages[1].length > 0) {
+                let _e = e;
+                _e.pages = _e.pages[1];
+                _locations[1].push(_e);
+            }
+        });
+
         console.log(_locations);
         return _locations;
     },

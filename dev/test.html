@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Afficher les référentiels tuilés Géoportail avec Leaflet</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <style type="text/css">
+    div#viewerDiv {
+        width:800px;
+        height:600px;
+        background-color:white;
+        background-position:center center;
+        background-repeat:no-repeat;
+    }
+    </style>
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  </head>
+  <body>
+    <div id="viewerDiv"></div>
+    <script type="text/javascript">
+	window.onload= function() {
+	var map = L.map("viewerDiv").setView([48.845,2.424],10) ;
+	L.tileLayer(
+	            'http://wxs.ign.fr/35qs2o9k3xi5ph4olkqp2nt3/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer=GEOGRAPHICALGRIDSYSTEMS.MAPS&format=image/jpeg&style=normal',
+	            {
+	                    minZoom:0,
+	                    maxZoom:18,
+	                    tileSize:256
+	            }).addTo(map);
+	}
+    </script>
+  </body>
+</html>
