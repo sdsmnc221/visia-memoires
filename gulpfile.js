@@ -26,7 +26,7 @@ const imgIn = ['dev/images/*.+(jpg|jpeg|gif|png|svg)', 'dev/images/**/*.+(jpg|jp
       libsStyles = 'dev/libs/*.css',
       libsScripts = ['dev/libs/fetch.js',
                      'dev/libs/leaflet.js',
-                     'dev/libs/GpPluginLeaflet.js',
+                     'dev/libs/leaflet-roughcanvas.js',
                      'dev/libs/papaparse.min.js'],
       libsWatch = 'dev/libs',
       libsOut = 'dist/libs',

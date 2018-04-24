@@ -26,6 +26,8 @@
   "dependencies": {
     "geoportal-extensions-leaflet": "^2.0.1",
     "leaflet": "^1.3.1",
+    "leaflet-roughcanvas": "^1.0.0",
+    "leaflet.bezier": "0.0.3-alpha",
     "papaparse": "^4.3.7",
     "roughjs": "^2.1.2",
     "sweetalert": "^2.1.0",
