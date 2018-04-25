@@ -1,0 +1,6 @@
+@mixin mask-transition {
+    mask-image: url('../../images/common/ink_reveal.png');
+    mask-size: 2400% 100%;
+    mask-repeat: no-repeat;
+    //coupled with _animation.scss .transition
+}

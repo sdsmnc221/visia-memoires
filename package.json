@@ -30,6 +30,7 @@
     "leaflet.bezier": "0.0.3-alpha",
     "papaparse": "^4.3.7",
     "roughjs": "^2.1.2",
+    "svg.js": "^2.6.4",
     "sweetalert": "^2.1.0",
     "tooltip.js": "^1.2.0",
     "whatwg-fetch": "^2.0.4"

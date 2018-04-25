@@ -3,19 +3,36 @@ $mainClass: book__pages__map;
 .#{$mainClass} {
     background-color: transparent;
     border-image: none;
-
-    img {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 106%;
-        transform-origin: top left;
-        transform: translate(-2px, -17px) scaleX(1.2) scaleY(0.99);
-    }
     
     &::before {
         display: none;
+    }
+
+    &__frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 102%;
+        height: calc(100% + 10px);
+        transform-origin: bottom right;
+        transform: translate(0, -6px);
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 93%;
+            height: 100%;
+            background-image: $pageDepth;
+            background-blend-mode: darken;
+          }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
     }
 
     &__mbox {
@@ -25,10 +42,6 @@ $mainClass: book__pages__map;
         width: 75%;
         height: 90%;
         transform: translate(-55%, -52%) rotate(-0.7deg) skew(-0.5deg);
-
-        canvas {
-            z-index: 999;
-        }
 
         section#map {
             width: 100%;

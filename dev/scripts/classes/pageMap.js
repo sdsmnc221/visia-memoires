@@ -6,7 +6,8 @@ class PageMap extends Page {
         //Build the PageText tree
         super(el, data);
         this.page = {
-            node: el
+            node: el,
+            frame: null
         }
         this.map = {
             node: this.page.node.querySelector('#map'),
@@ -19,6 +20,7 @@ class PageMap extends Page {
 
     //Init PageMap
     init() {
+        this.drawFrame();
 
         //Load map with GeoPortal's Cassini tile layer
         // Gp.Services.getConfig({
@@ -33,6 +35,19 @@ class PageMap extends Page {
         
 
     }
+
+    drawFrame() {
+        this.page.frame = this.page.node.querySelector('#page__map__frame');
+        let frame = SVG(this.page.frame.getAttribute('id')).size(497.99, 734.68),
+            viewbox = frame.viewbox(0, 0, 497.99, 734.68),
+            svg = rough.svg(frame.node),
+            path = svg.rectangle(0, 0, 466.3, 743.84, 
+                    {fill: '#f1f1e9', stroke: '#4d0910', bowing: -3, roughness: 0.8, fillStyle: 'solid', strokeWidth: 1.2});
+
+        frame.node.setAttribute('preserveAspectRatio', 'none');
+        frame.node.appendChild(path);
+        
+    } 
 
     loadMap() {
         const baseTile = 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.png',
@@ -62,9 +77,9 @@ class PageMap extends Page {
 
     loadMarkers() {
         //Create customized markers
-        const marker = L.divIcon({className: 'map__marker'}),
-              marker0 = L.divIcon({className: 'map__marker map__marker--0'}), //P
-              marker1 = L.divIcon({className: 'map__marker map__marker--1'}), //C
+        const marker = L.divIcon({className: 'map__marker', iconSize: [5, 5]}),
+              marker0 = L.divIcon({className: 'map__marker map__marker--0', iconSize: [5, 5]}), //P
+              marker1 = L.divIcon({className: 'map__marker map__marker--1', iconSize: [5, 5]}), //C
               popupOpts = {className: 'map__popup'};
               
 
@@ -91,7 +106,7 @@ class PageMap extends Page {
                       }
                       return template;
                   };
-            new L.marker(l.coords,{icon: icon})
+            new L.marker(l.coords, {icon: icon})
                 .addTo(this.map.context)
                 .bindPopup(popupTemplate(l, is0, is1), popupOpts);
         });

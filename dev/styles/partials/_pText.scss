@@ -3,19 +3,37 @@ $mainClass: book__pages__text;
 .#{$mainClass} {
     background-color: transparent;
     border-image: none;
-
-    img {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 100%;
-        height: 106%;
-        transform-origin: bottom right;
-        transform: translate(-100%, -15px) scaleX(1.3);
-    }
     
     &::before {
         display: none;
+    }
+
+    &__frame {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 95%;
+        height: calc(100% + 12px);
+        transform-origin: bottom right;
+        transform: translate(-47.5%, -6px);
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 97%;
+            height: 100%;
+            transform: translateX(-50%);
+            background-image: $pageDepth;
+            background-blend-mode: darken;
+          }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
     }
 
     &__tbox {
@@ -31,6 +49,7 @@ $mainClass: book__pages__text;
         height: 100%;
         transform-origin: bottom right;
         transform: rotate(-1.5deg) skew(-0.5deg) translateX(-50%);
+        @include mask-transition;
 
         header#bookTitle h1 {
             margin-top: 15px;

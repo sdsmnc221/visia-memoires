@@ -20,7 +20,7 @@ const DataHandler = {
         //Parse xml
         let xmlDoc = await new DOMParser().parseFromString(text, 'text/xml'),
             pages = await Array.from(xmlDoc.getElementsByTagName('page'));
-
+        
         //Format each pages
         let _pages = [];
         console.log(pages);

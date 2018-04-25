@@ -48,6 +48,7 @@ class App {
     //will flow to the PageText throught PageText.flipContent(data).
     initFlipContent(_app, _data) {
         const flipContent = (e) => {
+            _app.pages.text.initTransition();
             switch (e.keyCode) {
                 case 37: //Arrow Left
                     //Flip to previous page if and only if previous page >= min pages
