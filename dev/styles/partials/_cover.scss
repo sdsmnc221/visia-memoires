@@ -34,12 +34,12 @@ $mainClass: book__cover;
 
     &--front {
       z-index: 1;
-      transform: translate(-100%, -50%) rotateX(2deg) skewX(2deg);
+      transform: scale(1.005,1.03) translate(-100%,-50%) rotateX(2deg) skewX(3deg);
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
 
       &::after {
-        transform: translateX(10px) skewX(-2deg);
+        transform: translateX(10px) skewX(-3deg);
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
       }

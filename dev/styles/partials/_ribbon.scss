@@ -1,5 +1,5 @@
 $mainClass: book__ribbon;
-$ribbonW: 1.5%;
+$ribbonW: 1.75%;
 
 .#{$mainClass} {
     z-index: 3;
@@ -7,8 +7,8 @@ $ribbonW: 1.5%;
     top: 50%;
     left: calc(50% + #{$ribbonW} * 2);
     width: $ribbonW;
-    height: 80vh;
-    transform: translate(-50%, calc(-50% + 4px)) rotate(-4deg) skew(-4deg);
+    height: 85vh;
+    transform: translate(-50%, calc(-50% + 2px)) rotate(-4deg) skew(-4deg);
     background-color: $wine;
     box-shadow: 2px 3px 11px 0 $dWineShadow;
 

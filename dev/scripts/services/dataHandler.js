@@ -1,6 +1,7 @@
 const DataHandler = {
     textUrl: 'data/text.txt',
     locationsUrl: 'data/locations.csv',
+    xmlUrl: 'data/text.xml',
     
     getText: async function() {
         let text = await fetch(this.textUrl);
@@ -37,6 +38,37 @@ const DataHandler = {
         return _pages;
     }, 
 
+    getXml: async function() {
+        let text = await fetch(this.xmlUrl);
+        text = await text.text();
+        return text;
+    },
+
+    formatXml: async function() {
+        let text = await this.getXml();
+
+        //Parse xml
+        let xmlDoc = await new DOMParser().parseFromString(text, 'text/xml'),
+            book = {
+                info: {}
+            };
+        
+        //Extract Book Info
+        let rawInfo = xmlDoc.querySelector('teiHeader');
+        book.info.title = rawInfo.querySelector('titleStmt title').textContent.trim();
+        book.info.author = rawInfo.querySelector('titleStmt author').textContent.trim();
+        book.info.lang = rawInfo.querySelector('langUsage language').getAttribute('ident');
+        book.info.date = rawInfo.querySelector('creation date').getAttribute('when');
+        book.info.bibl = {};
+        book.info.bibl.authors = Array.from(rawInfo.querySelectorAll('bibl author')).map(a => a.textContent.trim());
+        book.info.bibl.title = rawInfo.querySelector('bibl title').textContent.trim();
+        book.info.bibl.date = rawInfo.querySelector('bibl date').textContent.trim();
+        book.info.bibl.publisher = rawInfo.querySelector('bibl publisher').textContent.trim();
+        book.info.bibl.ids = Array.from(rawInfo.querySelectorAll('idno'))
+
+        console.log(xmlDoc.getElementsByTagName('text').textContent);
+    },
+
     getLocations: async function() {
         let locations,
             csv = await fetch(this.locationsUrl);
@@ -45,6 +77,7 @@ const DataHandler = {
 
         return locations;
     },
+ 
 
     formatLocations: async function() {
         let locations = await this.getLocations(),

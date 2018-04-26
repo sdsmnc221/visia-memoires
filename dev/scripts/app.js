@@ -3,6 +3,7 @@ import { DataHandler } from './services/dataHandler';
 import { Page } from './classes/page';
 import { PageText } from './classes/pageText';
 import { PageMap } from './classes/pageMap';
+import { PagesStack } from './classes/pagesStack';
 
 //Once document is ready, init the app (the book).
 window.onload = () => {
@@ -17,6 +18,8 @@ class App {
     }
 
     init() {
+        DataHandler.formatXml();
+        
         //Fetch Formatted data then init the app with it.
         Promise.all([DataHandler.formatText(), DataHandler.formatLocations()])
             .then(res => {
@@ -24,8 +27,10 @@ class App {
                       locations = res[1];
                 //Build the app tree.
                 this.app.pages = {
-                    blankPages: Array.from(this.app.querySelectorAll('.book__pages__page'))
-                        .filter(p => !p.classList.contains('book__pages__text') && !p.classList.contains('book__pages__map')),
+                    blankPages: {
+                        left: new PagesStack(this.app.querySelector('#page__blank-pages--left'), 3, 7),
+                        right: new PagesStack(this.app.querySelector('#page__blank-pages--right'), 3, 7),
+                    },
                     text: new PageText(this.app.querySelector('.book__pages__text'), data[0]),
                     map: new PageMap(this.app.querySelector('.book__pages__map'), locations),
                     info: {
@@ -37,7 +42,6 @@ class App {
                 this.app.pages.info.currentPage = this.app.pages.text.page.data;
 
                 this.initFlipContent(this.app, data);
-
             
             });
     }
@@ -48,9 +52,9 @@ class App {
     //will flow to the PageText throught PageText.flipContent(data).
     initFlipContent(_app, _data) {
         const flipContent = (e) => {
-            _app.pages.text.initTransition();
             switch (e.keyCode) {
                 case 37: //Arrow Left
+                    _app.pages.text.initTransition();
                     //Flip to previous page if and only if previous page >= min pages
                     if (_app.pages.info.currentPage.id-1 >= _app.pages.info.min) {
                         let previousPage = _data.find(p => p.id === _app.pages.info.currentPage.id-1) || _app.pages.info.currentPage;
@@ -60,6 +64,7 @@ class App {
                     break;
 
                 case 39: //Arrow Right
+                    _app.pages.text.initTransition();
                     //Flip to previous page if and only if next page <= max pages
                     if (_app.pages.info.currentPage.id+1 <= _app.pages.info.max) {
                         let nextPage = _data.find(p => p.id === _app.pages.info.currentPage.id+1) || _app.pages.info.currentPage;

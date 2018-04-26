@@ -12,17 +12,17 @@ $mainClass: book__pages__text;
         position: absolute;
         top: 0;
         left: 50%;
-        width: 95%;
-        height: calc(100% + 12px);
+        width: 93%;
+        height: calc(100% + 20px);
         transform-origin: bottom right;
-        transform: translate(-47.5%, -6px);
+        transform: scale(1.02,1.004) translate(calc(-43% + 2px),-21px) rotate(0.2deg) skew(2deg);
 
         &::before {
             content: '';
             position: absolute;
             top: 0;
             left: 50%;
-            width: 97%;
+            width: 99%;
             height: 100%;
             transform: translateX(-50%);
             background-image: $pageDepth;

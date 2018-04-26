@@ -4,7 +4,7 @@ import { Page } from "./page";
 class PageText extends Page {
     constructor(el, data) {
         //Build the PageText tree
-        super(el, data);
+        super();
         this.page = {
             node: el,
             frame: null,
@@ -40,10 +40,12 @@ class PageText extends Page {
             viewbox = frame.viewbox(0, 0, 466.3, 743.84),
             svg = rough.svg(frame.node),
             path = svg.rectangle(0, 0, 466.3, 743.84, 
-                    {fill: '#f1f1e9', stroke: '#4d0910', bowing: 3, roughness: 0.8, fillStyle: 'solid', strokeWidth: 1.2});
+                    {fill: '#f1f1e9', stroke: '#750910', 
+                     bowing: 8, roughness: 0.4, 
+                     fillStyle: 'hachure', strokeWidth: 1.4,
+                     hachureGap: 0.2, curveStepCount: 3});
         frame.node.setAttribute('preserveAspectRatio', 'none');
         frame.node.appendChild(path);
-        
     } 
 
     initTransition() {

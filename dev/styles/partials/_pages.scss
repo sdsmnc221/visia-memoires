@@ -12,9 +12,9 @@ $mainClass: book__pages;
       z-index: 2;
       transform: translate(-100%, -50%);
 
-      .#{$mainClass}__page {
+      .#{$mainClass}__blank-pages {
         transform-origin: bottom right;
-        transform: scale(0.99, 0.94) translate(0, -3px) perspective(150px) rotateX(-1.11deg);
+        transform: scale(0.99,.98) translate(3px,-12px) rotate(2deg) skew(4deg);
       }
     }
 
@@ -23,31 +23,29 @@ $mainClass: book__pages;
       z-index: 2;
       transform: translate(0%, -50%);
 
-      .#{$mainClass}__page  {
+      .#{$mainClass}__blank-pages {
         transform-origin: bottom left;
-        transform: scale(0.99, 0.94) translate(0, -3px) perspective(150px) rotateX(calc(360deg - 1.11deg));
+        transform: scale(0.94,.98) translate(107%,-100%) rotate(180deg) skew(-1deg)
       }
     }
 
     //page's common style
-    &__page {
+    &__blank-pages {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
-      background-color: $page;
-      border: thin solid transparent;
-      border-image: url('../images/common/pencil_texture.jpg') 3 10 3 10 round stretch;
+      height: 100%; 
+    }
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: $pageDepth;
+    //Blank pages holder
+    &__blank-pages {
+      svg {
+          display: block;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
       }
     }
 
