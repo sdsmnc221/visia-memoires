@@ -95,14 +95,11 @@ $mainClass: book__pages__map;
             }
 
             @at-root .map__path {
-                opacity: 0.6;
-                stroke-width: 0.8px;
+                stroke-width: 0.9px;
                 filter: sepia(0) contrast(1) brightness(1) saturate(6);
                 &--0 {
-                    stroke: $subject0;
                 }
                 &--1 {
-                    stroke: $subject1;
                 }
             }
 

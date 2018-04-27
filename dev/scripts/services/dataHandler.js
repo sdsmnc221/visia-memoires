@@ -1,6 +1,6 @@
 const DataHandler = {
     textUrl: 'data/text.txt',
-    locationsUrl: 'data/locations.csv',
+    locationsUrl: 'data/locations2.csv',
     xmlUrl: 'data/text.xml',
     
     getText: async function() {
@@ -78,20 +78,31 @@ const DataHandler = {
         return locations;
     },
  
-
     formatLocations: async function() {
         let locations = await this.getLocations(),
             props = await locations[0], 
-            _location = {},
+            subjectElementIndex = await props.findIndex(e => e === 'subject'),
             _locations = {
                 cleaned: [],
                 origin: [],
-                subjects: {0: [], 1: []}
-            };
+                subjects: {}
+            },
+            _subjects = [];
+        
+        //Get every subjects (duplicated locations excluded)
+        locations.slice(1).forEach(location => {
+            let _subject = location[subjectElementIndex];
+            if (!_locations.subjects.hasOwnProperty(_subject)) {
+                _locations.subjects[_subject] = [];
+            }
+        });
+        _subjects = Object.keys(_locations.subjects);
 
         locations.slice(1).forEach((location, index) => {
-            //Origin
-            //_location
+
+            //Origin: Every locations (duplicated locationx INCLUDED)
+            //Note that Origin array contains _location (one underscore) object
+            let _location = {};
             location.forEach((e, i) => {
                 _location[props[i]] = e;
             });
@@ -110,44 +121,42 @@ const DataHandler = {
             delete _location.lng;
             _locations.origin.push(_location);
             
-            //Cleaning & Merging process 
-            //__location
-            //To keep 1 unique occurence of each location 
-            //if _locations.cleaned already contains an 
-            //occurence of the location
+
+            //Branching process
+            //Subjects: Every locations (duplicated location INCLUDED), separated by
+            //subject,  for map's path/directions making
+            //Note that each sub-array contains __location (two underscores) object
+            let __location = JSON.parse(JSON.stringify(_location));
+            delete __location.subject;
+            _locations.subjects[_location.subject].push(__location);
+
+
+            //Cleaning & Merging process
+            //Cleaned: Every locations (duplicated location EXCLUDED), for map's markers making
+            //Note that Cleaned array contains ___location (three underscores) object
+
+            //if _locations.cleaned do not contain an occurence of the location
+            //Then rebuild _location to ___location and push it to Cleaned array
             let occurenceIndex = _locations.cleaned.findIndex(e => e.name === _location.name),
-                __location = JSON.parse(JSON.stringify(_location));
-            //First occurence: Rebuild _location and push it to _location.cleaned
+                ___location = JSON.parse(JSON.stringify(_location));
             if (occurenceIndex === -1) {
-                __location.bookInfo = {
-                    0: (__location.subject === '0') ? [__location.bookInfo] : [],
-                    1: (__location.subject === '1') ? [__location.bookInfo] : []
-                }
-                delete __location.subject;
-                _locations.cleaned.push(__location);
+                //Delete unnecessary keys (page, src, year) (___location)
+                Object.keys(___location.bookInfo).forEach(k => delete ___location.bookInfo[k]);
+                _subjects.forEach(subject => {
+                    ___location.bookInfo[subject] = (___location.subject === subject) ? [_location.bookInfo] : [];
+                });
+                delete ___location.subject;
+                _locations.cleaned.push(___location);
             //else from 2nd occurence: Add up subjects and pages to the already 
             //existed location in _location.cleaned
             } else {
-                const occurence = _locations.cleaned[occurenceIndex].bookInfo[__location.subject];
-                _locations.cleaned[occurenceIndex].bookInfo[__location.subject] = [...occurence, __location.bookInfo];
+                const occurence = _locations.cleaned[occurenceIndex].bookInfo[___location.subject];
+                _locations.cleaned[occurenceIndex].bookInfo[___location.subject] = [...occurence, ___location.bookInfo];
             }
+
 
             //Empty _location
             _location = {};
-        });
-
-        //Branching process
-        _locations.cleaned.forEach(e => {
-            if (e.bookInfo[0].length > 0) {
-                let _e = JSON.parse(JSON.stringify(e));
-                _e.bookInfo = e.bookInfo[0];
-                _locations.subjects[0].push(_e);
-            }
-            if (e.bookInfo[1].length > 0) {
-                let _e = JSON.parse(JSON.stringify(e));
-                _e.bookInfo = e.bookInfo[1];
-                _locations.subjects[1].push(_e);
-            }
         });
 
         console.log(_locations);
