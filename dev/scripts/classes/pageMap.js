@@ -14,7 +14,9 @@ class PageMap extends Page {
             node: this.page.node.querySelector('#map'),
             context: null,
             locations: data,
-            subjects: Object.keys(data.subjects)
+            subjects: Object.keys(data.subjects),
+            paths : {},
+            controllers: {nodes: {}}
         };
 
         this.init();
@@ -32,7 +34,8 @@ class PageMap extends Page {
 
         //Load map without GeoPortal's services
         this.loadMap();
-        this.loadPaths(); 
+        this.loadPaths();
+        this.loadControllers(); 
         this.loadMarkers();
         
 
@@ -85,9 +88,6 @@ class PageMap extends Page {
             attributionControl: false,
             zoomControl: false
         })
-
-        //Position Zoom Control to Bottom Right of the map
-        new L.Control.Zoom({position: 'bottomright'}).addTo(this.map.context);
 
         //Load tile layers
         L.tileLayer(baseTile, {maxZoom: 30}).addTo(this.map.context);
@@ -149,8 +149,48 @@ class PageMap extends Page {
             };
         this.map.subjects.forEach((subject, i) => {
             let path = this.map.locations.subjects[subject].map(l => l.coords);
-            new L.polyline(path, pathOpts(i)).addTo(this.map.context);
+            this.map.paths[subject] = new L.polyline(path, pathOpts(i)).addTo(this.map.context);
         });
+    }
+
+    loadControllers() {
+        //Load paths controller
+        this.map.controllers.paths = L.control.layers(null, this.map.paths, {collapsed: false});
+        this.map.controllers.paths.addTo(this.map.context);
+
+        //Move paths controller to outside of the map
+        this.map.controllers.nodes.p = this.page.node.querySelector('.book__pages__map__controllers--paths');
+        this.map.controllers.paths._container.remove();
+        this.map.controllers.nodes.p.appendChild(
+            this.map.controllers.paths.onAdd(this.map.context)
+        );
+
+        //Paths controller behaviour
+        this.map.controllers.nodes.p.querySelectorAll('form label').forEach((label, index) => {
+            label.classList.add('controller__toggle', `controller__toggle--${index}`);
+        });
+        this.map.context.on('overlayadd', e => {
+            let subjectIndex = this.map.subjects.findIndex(s => s === e.name);
+            this.map.controllers.nodes.p.querySelector(`label.controller__toggle--${subjectIndex}`)
+                .classList.remove('controller__toggle--hide');
+        });
+        this.map.context.on('overlayremove', e => {
+            let subjectIndex = this.map.subjects.findIndex(s => s === e.name);
+            this.map.controllers.nodes.p.querySelector(`label.controller__toggle--${subjectIndex}`)
+                .classList.add('controller__toggle--hide');
+        })
+
+        //Load zoom controller
+        //Position Zoom Control to Bottom Right of the map
+        this.map.controllers.zoom = L.control.zoom();
+        this.map.controllers.zoom.addTo(this.map.context);
+
+        //Move zoom controller to outside of the map
+        this.map.controllers.nodes.z = this.page.node.querySelector('.book__pages__map__controllers--zoom');
+        this.map.controllers.zoom._container.remove();
+        this.map.controllers.nodes.z.appendChild(
+            this.map.controllers.zoom.onAdd(this.map.context)
+        );
     }
     
 }

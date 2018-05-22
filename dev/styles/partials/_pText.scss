@@ -45,23 +45,17 @@ $mainClass: book__pages__text;
         position: absolute;
         top: 0;
         left: 60%;
-        width: 80%;
+        width: 85%; //80%
         height: 100%;
         transform-origin: bottom right;
-        transform: rotate(-1.5deg) skew(-0.5deg) translateX(-50%);
+        transform: rotate(-1.5deg) skew(-0.5deg) translateX(calc(-50% - 5px)); //-10px
         @include mask-transition;
 
         header#bookTitle h1 {
-            margin-top: 15px;
+            // margin-top: 15px;
             margin-right: 30px;
             text-align: center;
             text-transform: uppercase;
-        }
-
-        section#content {
-            margin-top: 20px;
-            margin-right: 30px;
-            overflow-y: scroll;
         }
 
         footer#pageInfo {
@@ -69,6 +63,36 @@ $mainClass: book__pages__text;
             margin-bottom: 20px;
             margin-right: 30px;
             font-style: normal;
+        }
+
+        .content__frame {
+            margin-top: 35px;
+            margin-right: 30px;
+            overflow-y: scroll;
+            width: 100%;
+            height: 100%;
+            overflow: -moz-scrollbars-none;
+            &::-webkit-scrollbar { 
+                display: none; 
+            }
+            &--l {
+                shape-outside: ellipse(16px 2000px at 10% 60%);
+                shape-image-threshold: 0.9;
+                width: 50%;
+                height: calc(100% + 22px);
+                float: left;
+            }
+            &--r {
+                shape-outside: ellipse(16px 2000px at 90% 60%);
+                shape-image-threshold: 0.9;
+                width: 50%;
+                height: calc(100% + 22px);
+                float: right;
+            }
+            section#content {
+                padding: 0 10px 0 20px;
+                // overflow-y: scroll;
+            }
         }
     }
 }

@@ -29,7 +29,9 @@ const imgIn = ['dev/images/*.+(jpg|jpeg|gif|png|svg)', 'dev/images/**/*.+(jpg|jp
                      'dev/libs/leaflet-roughcanvas.js',
                      'dev/libs/svg.min.js',
                      'dev/libs/rough.min.js',
-                     'dev/libs/papaparse.min.js'],
+                     'dev/libs/papaparse.min.js',
+                     'dev/libs/circletype.min.js',
+                     'dev/libs/css-shapes-polyfill.min.js'],
       libsWatch = 'dev/libs',
       libsOut = 'dist/libs',
       dataIn = ['dev/data/*', 'dev/data/**/*']

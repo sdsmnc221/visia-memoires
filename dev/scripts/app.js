@@ -7,6 +7,7 @@ import { PagesStack } from './classes/pagesStack';
 
 //Once document is ready, init the app (the book).
 window.onload = () => {
+    window.ShapesPolyfill.run();
     const _app = new App(document.querySelector('.app'));
 };
 
@@ -18,7 +19,7 @@ class App {
     }
 
     init() {
-        DataHandler.formatXml();
+        // DataHandler.formatXml();
         
         //Fetch Formatted data then init the app with it.
         Promise.all([DataHandler.formatText(), DataHandler.formatLocations()])

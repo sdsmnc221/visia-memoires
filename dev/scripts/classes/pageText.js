@@ -10,12 +10,20 @@ class PageText extends Page {
             frame: null,
             data: data
         };
+        this.bookTitle = {
+            node: this.page.node.querySelector('#bookTitle h1')
+        };
         this.transition = {
             node: this.page.node.querySelector('.book__pages__text__tbox'),
             animation: {className: 'transition', duration: 3000}
         };
         this.content = {
             node: this.page.node.querySelector('#content'),
+            frame: {
+                node: this.page.node.querySelector('.content__frame'),
+                left: this.page.node.querySelector('.content__frame--l'),
+                right: this.page.node.querySelector('.content__frame--r'),
+            },
             text: this.page.data.content
         };
         this.pageInfo = {
@@ -46,6 +54,12 @@ class PageText extends Page {
                      hachureGap: 0.2, curveStepCount: 3});
         frame.node.setAttribute('preserveAspectRatio', 'none');
         frame.node.appendChild(path);
+
+        //Draw bending Book Title
+        console.log(this.bookTitle);
+        this.bookTitle.curvedText = new CircleType(this.bookTitle.node)
+                                        .radius(this.bookTitle.node.clientWidth*12)
+                                        .forceWidth(true).forceHeight(false);
     } 
 
     initTransition() {
@@ -59,6 +73,9 @@ class PageText extends Page {
         let changeContent = setTimeout(() => {
             this.content.node.innerHTML = data.content;
             this.pageInfo.indexNode.innerHTML = data.id;
+            this.content.frame.node.scrollTop = 0;
+            this.content.frame.left.style.height = `${this.content.node.offsetHeight*1.01}px`;
+            this.content.frame.right.style.height = `${this.content.node.offsetHeight*1.01}px`;
         }, this.transition.animation.duration/2),
             stopTransition = setTimeout(() => {
                 this.transition.node.classList.remove(this.transition.animation.className);

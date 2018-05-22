@@ -1,6 +1,6 @@
 @mixin mask-transition {
-    //mask-image: url('../images/common/ink_reveal.png'); //localhost
-    mask-image: url('/visia/memoires/images/common/ink_reveal.png'); //localhost
+    mask-image: url('../images/common/ink_reveal.png'); //localhost
+    // mask-image: url('/visia/memoires/images/common/ink_reveal.png'); //host
     mask-size: 2400% 100%;
     mask-repeat: no-repeat;
     //coupled with _animation.scss .transition
