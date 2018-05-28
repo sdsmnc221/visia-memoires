@@ -4,13 +4,19 @@ import { Page } from './classes/page';
 import { PageText } from './classes/pageText';
 import { PageMap } from './classes/pageMap';
 import { PagesStack } from './classes/pagesStack';
+import { BothPages} from './classes/bothPages';
 
 //Once document is ready, init the app (the book).
+build();
 window.onload = () => {
     window.ShapesPolyfill.run();
-    const _app = new App(document.querySelector('.app'));
+    setTimeout(() => {
+        document.querySelector('.app__preloader').classList.add('on-page-ready');
+    }, 1200);
+    
 };
 
+function build() {
 //_app's core
 class App {
     constructor(el) {
@@ -24,8 +30,9 @@ class App {
         //Fetch Formatted data then init the app with it.
         Promise.all([DataHandler.formatText(), DataHandler.formatLocations()])
             .then(res => {
-                const data = res[0],
+                let data = res[0],
                       locations = res[1];
+                data = DataHandler.updateTextWithCrossData(data, DataHandler.crossData(data, locations));
                 //Build the app tree.
                 this.app.pages = {
                     blankPages: {
@@ -38,8 +45,10 @@ class App {
                         min: data[0].id,
                         max: data[data.length-1].id,
                         currentPage: data[0]
-                    }
+                    },
                 };
+                this.app.pages.text.bothPages = new BothPages(this.app.pages.text.content.node, this.app.pages.map.map.markers);
+                this.app.pages.text.bothPages = this.app.pages.text.bothPages;
                 this.app.pages.info.currentPage = this.app.pages.text.page.data;
 
                 this.initFlipContent(this.app, data);
@@ -52,7 +61,7 @@ class App {
     //Once < or > is pressed, the data of the next or current page
     //will flow to the PageText throught PageText.flipContent(data).
     initFlipContent(_app, _data) {
-        const flipContent = (e) => {
+        const flipContent = async function (e) {
             switch (e.keyCode) {
                 case 37: //Arrow Left
                     _app.pages.text.initTransition();
@@ -79,3 +88,7 @@ class App {
         window.addEventListener('keydown', flipContent);
     }
 }
+
+    const _app = new App(document.querySelector('.app'));
+};
+

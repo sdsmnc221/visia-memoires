@@ -31,7 +31,8 @@ class PageText extends Page {
             indexNode: this.page.node.querySelector('#pageIndex'),
             index: this.page.data.id
         };
-
+        this.bothPage = null;
+        
         this.init();
     }
 
@@ -56,7 +57,6 @@ class PageText extends Page {
         frame.node.appendChild(path);
 
         //Draw bending Book Title
-        console.log(this.bookTitle);
         this.bookTitle.curvedText = new CircleType(this.bookTitle.node)
                                         .radius(this.bookTitle.node.clientWidth*12)
                                         .forceWidth(true).forceHeight(false);
@@ -71,17 +71,17 @@ class PageText extends Page {
     flipContent(data) {
         this.initTransition();
         let changeContent = setTimeout(() => {
-            this.content.node.innerHTML = data.content;
-            this.pageInfo.indexNode.innerHTML = data.id;
-            this.content.frame.node.scrollTop = 0;
-            this.content.frame.left.style.height = `${this.content.node.offsetHeight*1.01}px`;
-            this.content.frame.right.style.height = `${this.content.node.offsetHeight*1.01}px`;
-        }, this.transition.animation.duration/2),
+                this.content.node.innerHTML = data.content;
+                this.pageInfo.indexNode.innerHTML = data.id;
+                this.bothPages.updateDynamicLocations();
+                this.content.frame.node.scrollTop = 0;
+                this.content.frame.left.style.height = `${this.content.node.offsetHeight*1.01}px`;
+                this.content.frame.right.style.height = `${this.content.node.offsetHeight*1.01}px`;
+            }, this.transition.animation.duration/2),
             stopTransition = setTimeout(() => {
                 this.transition.node.classList.remove(this.transition.animation.className);
                 clearTimeout(changeContent);
             }, this.transition.animation.duration-400);
-        
     }
     
 }

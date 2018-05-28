@@ -24,7 +24,6 @@ const DataHandler = {
         
         //Format each pages
         let _pages = [];
-        console.log(pages);
         pages.forEach(page => {
             let _page = {};
             _page.id = parseInt(page.getAttribute('id'));
@@ -85,10 +84,10 @@ const DataHandler = {
             _locations = {
                 cleaned: [],
                 origin: [],
-                subjects: {}
+                subjects: {},
             },
             _subjects = [];
-        
+        console.log(locations);
         //Get every subjects (duplicated locations excluded)
         locations.slice(1).forEach(location => {
             let _subject = location[subjectElementIndex];
@@ -162,6 +161,56 @@ const DataHandler = {
         console.log(_locations);
         return _locations;
     },
+
+    crossData(dText, dLocations) {
+        //Array of page objects that will contain array of locations'
+        //name appeared on that page (for starters, empty array)
+        let _crossData = {},
+            subjects = Object.keys(dLocations.subjects); 
+        dText.forEach(p => _crossData[p.id] = []);
+
+        //Fill pages with locations' name
+        dLocations.cleaned.forEach(l => {
+            //Extract all pages where the location appears
+            let _l = JSON.parse(JSON.stringify(l)),
+                pages = [];
+            subjects.forEach(s => {
+                pages = [...pages, ..._l.bookInfo[s].map(p => parseInt(p.page, 10)-1)]; //+1 for now...
+            });
+            //Keep unique occurence
+            pages = [...new Set(pages)];
+            
+            //Fill _crossData[pageID] with location's name
+            pages.forEach(p =>{
+                if (p in _crossData) {
+                    _crossData[p].push(_l.name);
+                } else {
+                    _crossData[p] = Array.isArray(_crossData[p]) ? [..._crossData[p], _l.name] : [_l.name];
+                }
+            });
+        });
+        return _crossData;
+    },
+
+    updateTextWithCrossData(dText, dCross) {
+        let _updatedText = JSON.parse(JSON.stringify(dText));
+        // console.log(_updatedText[8]);
+        // console.log(dCross[24]);
+        _updatedText.forEach(p => {
+            if (dCross[p.id].length > 0) {
+                let pattern = `${dCross[p.id].join('|')}`;//`( )(${dCross[p.id].join('|')})([ .;!?'"])`;
+                p.content = p.content.replace(new RegExp(pattern, 'g'), (m, p1, p2, p3, o, str) => [`<a title="${m}" href="#" class="content__location">`, m, '</a>'].join(''));
+                // if (p.id === 24) {
+                //     console.log(pattern);
+                //     console.log(p.content);
+                //     console.log(toto);
+                // }
+                // console.log(p.content);
+            }
+        });
+        console.log(_updatedText);
+        return _updatedText;
+    }
 };
 
 export { DataHandler };

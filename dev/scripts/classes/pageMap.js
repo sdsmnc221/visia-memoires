@@ -15,9 +15,11 @@ class PageMap extends Page {
             context: null,
             locations: data,
             subjects: Object.keys(data.subjects),
+            markers: [],
             paths : {},
             controllers: {nodes: {}}
         };
+        this.bothPage = null;
 
         this.init();
     }
@@ -111,7 +113,7 @@ class PageMap extends Page {
                     template += `<p>${subject}</p>`;
                     location.bookInfo[subject].forEach((e, i) => {
                         years += !e.year ? '' : 
-                            (i === 0 ? `<li><a href="#">${e.year}</a></li>` : 
+                            (i === 0 ? `<li><a href="#" title="Page ${e.page}">${e.year}</a></li>` : 
                             (years.indexOf(e.year) === -1 ? '' : `<li><a href="#">${e.year}</a></li>`));
                     });
                     template += !years ? '' : `<ul>${years}</ul>`;
@@ -122,12 +124,13 @@ class PageMap extends Page {
               
 
         //Load markers
+        this.map.markers = [];
         this.map.locations.cleaned.forEach(l => {
             let who = this.map.subjects.filter(subject => l.bookInfo[subject].length > 0),
                 icon = (who.length > 1) ? makeIcon() : makeIcon(`map__marker--${this.map.subjects.findIndex(s => s === who[0])}`);
-            new L.marker(l.coords, {icon: icon})
+            this.map.markers.push(new L.marker(l.coords, {icon: icon, title: l.name})
                 .addTo(this.map.context)
-                .bindPopup(popupContent(l), popupOpts);
+                .bindPopup(popupContent(l), popupOpts));
         });
     }
 
