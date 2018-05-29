@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-    https://visia.antr.tech/memoires
+    https://antr.tech/visia/memoires
 
 ## Démarrer
 
@@ -11,6 +11,7 @@ Le code compilé (ou la production) se trouve dans le dossier dist.
 La transformation (et compilation, minification, etc.) du dev au dist se faire avec NodeJS, Gulp et Browserify (et autres).
 
 **La version mise a jour du code**
+
     https://framagit.org/george2etexte/memoires/tree/master
 
 ### Mode Production
