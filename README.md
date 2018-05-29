@@ -10,6 +10,9 @@ Le code source de tout le développement se trouve dans le dossier dev.
 Le code compilé (ou la production) se trouve dans le dossier dist.
 La transformation (et compilation, minification, etc.) du dev au dist se faire avec NodeJS, Gulp et Browserify (et autres).
 
+**La version mise a jour du code**
+    https://framagit.org/george2etexte/memoires/tree/master
+
 ### Mode Production
 
 Héberger le dossier dist sur un serveur.
